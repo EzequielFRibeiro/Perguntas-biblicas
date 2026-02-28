@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Bíblia - De Gênesis a Apocalipse</title>
+    <link rel="stylesheet" href="styles.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="game-container">
+        <!-- Tela de Início -->
+        <div id="start-screen" class="screen active">
+            <div class="start-content">
+                <div class="bible-icon">
+                    <i class="fas fa-book-bible"></i>
+                </div>
+                <h1>Jogo da Bíblia</h1>
+                <h2>De Gênesis a Apocalipse</h2>
+                <p style="margin-bottom: 0.5rem;">Teste seus conhecimentos sobre toda a Bíblia Sagrada</p>
+                <p style="font-size: 0.9em; color: #7f8c8d; margin-bottom: 2rem;">Criado por Kiel</p>
+
+                <div class="name-selector" style="margin-bottom: 2rem;">
+                    <h3>Seu Nome:</h3>
+                    <input type="text" id="player-name-input" placeholder="Digite seu nome"
+                        style="padding: 0.75rem 1.5rem; border: 2px solid var(--primary-color); border-radius: 50px; font-size: 1rem; text-align: center; font-family: 'Roboto', sans-serif; width: 80%; max-width: 300px; outline: none; transition: box-shadow 0.3s ease;">
+                </div>
+
+                <div class="difficulty-selector">
+                    <h3>Selecione a Dificuldade:</h3>
+                    <div class="difficulty-buttons">
+                        <button class="difficulty-btn active" data-difficulty="easy">Fácil</button>
+                        <button class="difficulty-btn" data-difficulty="medium">Médio</button>
+                        <button class="difficulty-btn" data-difficulty="hard">Difícil</button>
+                    </div>
+                </div>
+
+                <div class="mode-selector">
+                    <h3>Modo de Jogo:</h3>
+                    <div class="mode-buttons">
+                        <button class="mode-btn active" data-mode="random">Aleatório</button>
+                        <button class="mode-btn" data-mode="old-testament">Antigo Testamento</button>
+                        <button class="mode-btn" data-mode="new-testament">Novo Testamento</button>
+                        <button class="mode-btn" data-mode="by-book">Por Livro</button>
+                    </div>
+                </div>
+
+                <button id="start-btn" class="start-btn">Iniciar Jogo</button>
+
+                <div class="stats-preview">
+                    <div class="stat-card">
+                        <i class="fas fa-trophy"></i>
+                        <span id="best-score">Melhor: 0</span>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-chart-line"></i>
+                        <span id="total-games">Jogos: 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Seleção de Livro -->
+        <div id="book-selection" class="screen">
+            <div class="book-selection-content">
+                <h2>Selecione o Livro</h2>
+                <div class="book-grid" id="book-grid">
+                    <!-- Livros serão gerados dinamicamente -->
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+                    <button id="back-to-start" class="back-btn">← Voltar</button>
+                    <button id="start-book-btn" class="start-btn"
+                        style="margin-bottom: 0; padding: 1rem 2rem; font-size: 1.2rem;">Iniciar Jogo</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela do Jogo -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="score-board">
+                    <div class="score-item">
+                        <span class="label">Jogador:</span>
+                        <span id="current-player-name" class="value"
+                            style="font-size: 1.2rem; color: var(--accent-color);">Visitante</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="label">Pontos:</span>
+                        <span id="score" class="value">0</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="label">Pergunta:</span>
+                        <span id="question-count" class="value">1/20</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="label">Tempo:</span>
+                        <span id="timer" class="value">30s</span>
+                    </div>
+                </div>
+
+                <div class="progress-bar">
+                    <div id="progress-fill" class="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <div id="question-text" class="question-text"></div>
+                <div id="question-reference" class="question-reference"></div>
+            </div>
+
+            <div class="options-container" id="options-container">
+                <!-- Opções serão geradas dinamicamente -->
+            </div>
+
+            <div class="feedback-container" id="feedback-container">
+                <div id="feedback-message" class="feedback-message"></div>
+                <div id="correct-answer" class="correct-answer"></div>
+            </div>
+        </div>
+
+        <!-- Tela de Resultado -->
+        <div id="result-screen" class="screen">
+            <div class="result-content">
+                <div class="result-icon">
+                    <i class="fas fa-crown"></i>
+                </div>
+                <h2>Fim de Jogo!</h2>
+                <div class="final-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Pontuação Final:</span>
+                        <span id="final-score" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Respostas Corretas:</span>
+                        <span id="correct-answers" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Respostas Erradas:</span>
+                        <span id="wrong-answers" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Precisão:</span>
+                        <span id="accuracy" class="stat-value">0%</span>
+                    </div>
+                </div>
+
+                <div class="result-actions">
+                    <button id="play-again-btn" class="play-again-btn">Jogar Novamente</button>
+                    <button id="share-btn" class="share-btn">
+                        <i class="fas fa-share-alt"></i> Compartilhar
+                    </button>
+                </div>
+
+                <div class="leaderboard">
+                    <h3>Top 5 Melhores Pontuações</h3>
+                    <div id="leaderboard-list" class="leaderboard-list">
+                        <!-- Pontuações serão exibidas aqui -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay de Carregamento -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Preparando as perguntas...</p>
+        </div>
+    </div>
+
+    <script src="questions.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
